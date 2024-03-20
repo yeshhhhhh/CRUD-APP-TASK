@@ -3,18 +3,24 @@ import mysql from "mysql";
 import cors from "cors";
 const app = express();
 app.use(express.json());
-app.use(express.json());
 app.use(cors());
+
+app.listen(3366,()=>{
+  console.log("Running")
+})
+
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
+  port: 3306,
   user: "root",
-  password: "",
-  database: "crud",
-  dateStrings:'date'
+  password: "Lahore@12345Haris",
+  database: "test",
+   dateStrings:'date'
 });
 app.get('/', (req, res) => {
   const sql = "SELECT * FROM book";
   db.query(sql, (err, data) => {
+    console.log('DB error: ', err);
     if (err) {
       return res.json({ Error: "Error" });
     }
@@ -36,20 +42,21 @@ app.post('/create', (req, res) => {
     });
   });
   app.put('/update/:id', (req, res) => {
-    const sql = "update book set publisher=?, name=?, date=?, where id=?";
-    const values=[
-        req.body.publisher,
-        req.body.name,
-        req.body.date
-    ]
-    const id=req.params.id;
-    db.query(sql,[...values,id], (err, data) => {
+    const sql = "UPDATE book SET publisher=?, name=?, date=? WHERE id=?";
+    const values = [
+      req.body.publisher,
+      req.body.name,
+      req.body.date,
+      req.params.id 
+    ];
+    db.query(sql, values, (err, data) => {
       if (err) {
         return res.json({ Error: "Error" });
       }
-      return res.json(data)
+      return res.json(data);
     });
   });
+  
   app.delete('/delete/:id', (req, res) => {
     const sql = "delete from book where id=?";
   
@@ -71,6 +78,6 @@ app.post('/create', (req, res) => {
         return res.json(data)
       });
   })
-app.listen(3030, () => {
-  console.log("Running");
-});
+// app.listen(3366, () => {
+//   console.log("Running");
+// });

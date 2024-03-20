@@ -6,8 +6,6 @@ import UpdateBook from './UpdateBook'
 import Nav from './Nav'
 
 function App() {
-  
-
   return (
    <BrowserRouter>
    <Nav/>
